@@ -1,0 +1,22 @@
+name: Run excel-html.py on commit
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Python environment
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x' # Replace with the version of Python that your script requires
+      - name: Install dependencies
+        run: |
+          pip install pandas
+      - name: Run script
+        run: python excel-html.py

@@ -265,9 +265,7 @@ fourth_block = """</div>
 
 # In[7]:
 
-
-# Open the file for writing
-with open("index.html", 'w') as f:
+with open("./index.html", "w") as f:
     # Redirect stdout to the file
     sys.stdout = f
     

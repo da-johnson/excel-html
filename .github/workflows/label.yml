@@ -1,46 +1,41 @@
-name: Excel to HTML
+name: Create file
 
 on: 
   workflow_dispatch:
 
 jobs:
-  run-python:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-        
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-          
-      - name: Run Python Script
-        run: |
-          python -m pip install pandas openpyxl
-          python excel-html.py
+    - name: Create file
+      run: |
+        printf "Hello\nWorld\n" > hw.txt
 
-      - name: Configure Git
-        run: |
-          git config --global user.name "Your Name"
-          git config --global user.email "youremail@example.com"
-          git clone https://github.com/${{ github.repository }}.git
-          cd $(basename -s .git ${{ github.repository }})
+    - name: Create file
+      run: |
+        echo First        > other.txt
+        echo Second Line >> other.txt
+        echo Third       >> other.txt
 
 
-      - name: Write file
-        run: |
-          with open("index.html", 'w') as f:
-              f.write("Hello, World!")
-              
-      - name: Add and commit file
-        run: |
-          git add index.html
-          git commit -m "Add index.html"
-          
-      - name: Push changes
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
+    - name: Show file content
+      run: |
+        pwd
+        ls -la
+        cat hw.txt
+        cat other.txt
+
+
+    - name: Create directory and create file in homedir
+      run: |
+        ls -la ~/
+        mkdir ~/.zorg
+        echo First        > ~/.zorg/home.txt
+        echo Second Line >> ~/.zorg/home.txt
+        echo Third       >> ~/.zorg/home.txt
+        ls -la ~/.zorg/
+
+    - name: Show file content
+      run: |
+        ls -la ~/
+        cat ~/.zorg/home.txt

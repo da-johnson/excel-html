@@ -1,15 +1,24 @@
-on: [push]
+name: Excel to HTML
+
+on: 
+  [push]
 
 jobs:
-  hello_world_job:
+  run-python
     runs-on: ubuntu-latest
-    name: A job to say hello
     steps:
-      - name: Hello world action step
-        id: hello
-        uses: actions/hello-world-docker-action@v2
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
-          who-to-greet: 'Mona the Octocat'
-      # Use the output from the `hello` step
-      - name: Get the output time
-        run: echo "The time was ${{ steps.hello.outputs.time }}"
+          python-version: '3.11'
+          
+      - name: Run Python Script
+        run: |
+          python -m pip install requests
+          python excel-html.py
+          
+    
+    

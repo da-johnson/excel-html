@@ -21,9 +21,26 @@ jobs:
           python -m pip install pandas openpyxl
           python excel-html.py
 
-      # Upload the generated index.html file as an artifact
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v2
+      - name: Configure Git
+        run: |
+          git config --global user.name "Your Name"
+          git config --global user.email "youremail@example.com"
+          git clone https://github.com/${{ github.repository }}.git
+          cd $(basename -s .git ${{ github.repository }})
+
+
+      - name: Write file
+        run: |
+          with open("index.html", 'w') as f:
+              f.write("Hello, World!")
+              
+      - name: Add and commit file
+        run: |
+          git add index.html
+          git commit -m "Add index.html"
+          
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.6.0
         with:
-          name: index.html
-          path: ./index.html
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main

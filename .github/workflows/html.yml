@@ -1,31 +1,29 @@
-name: Excel to HTML
+name: Overwrite some file
 
-on: 
+on:
+  push:
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
-  run-python:
+  build:
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Checkout Code
+      - name: Checkout repo
         uses: actions/checkout@v3
-        
-      - name: Setup Python
-        uses: actions/setup-python@v4
+
+      - name: Overwrite file
+        uses: "DamianReeves/write-file-action@master"
         with:
-          python-version: '3.11'
-          
-      - name: Run Python Script
-        run: |
-          sudo python -m pip install pandas openpyxl
-          sudo python excel-html.py
-          git config --global user.email "no-reply@github.com"
-          git config --global user.name "GitHub Actions"
-          git add index.html
-          git commit -m "AUTO updated index.html"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-     
+          path: path/to/file.js
+          write-mode: overwrite
+          contents: |
+            console.log('some contents')
+            
+      - name: Commit & Push
+        uses: Andro999b/push@v1.3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
+          force: true
+          message: 'Overwritten by Github Actions - ${date}'

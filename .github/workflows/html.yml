@@ -18,7 +18,7 @@ jobs:
           
       - name: Run Python Script
         run: |
-          python -m pip install pandas openpyxl
+          sudo python -m pip install pandas openpyxl
           sudo python excel-html.py
           git config --global user.email "no-reply@github.com"
           git config --global user.name "GitHub Actions"

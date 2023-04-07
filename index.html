@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+/* This code defines styles for a legend, which is typically used to explain what the colors in a visualization mean */
+
+/* First, we define the properties for the container element of the legend */
+.legend {
+display: flex; /* Use flexbox to arrange the items horizontally */
+justify-content: left; /* Align the items to the left of the container */
+}
+
+/* Next, we define the properties for the individual items in the legend */
+.legend-item {
+margin: 5px; /* Add some space between items */
+padding: 5px; /* Add some padding to make the items more visually appealing */
+font-size: 14px; /* Set the font size of the text */
+border: 1px solid #ccc; /* Add a border around each item */
+color: white
+}
+
+/* Each legend item has a different background color to represent different data categories */
+.legend-item.plasmid {
+background-color: #00CED1; /* Set the background color for the plasmid category */
+}
+
+.legend-item.primer {
+background-color: #FFA500; /* Set the background color for the primer category */
+}
+
+.legend-item.cells {
+background-color: #00FF00; /* Set the background color for the cells category */
+}
+
+.legend-item.glycerol {
+background-color: #9932CC; /* Set the background color for the stabs category */
+}
+
+.legend-item.misc {
+background-color: #FFC0CB; /* Set the background color for the misc category */
+}
+
+.legend-item.empty {
+background-color: #A9A9A9; /* Set the background color for empty category */
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 2px;
+  background-color: black;
+  padding: 2px;
+  height: 100%;
+  width: max-content;
+  max-width: 100%; /* set max-width to ensure it doesn't overflow column left */
+}
+
+.grid-container > div {
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  padding: 2px 0;
+  font-size: 10px;
+}
+
+
+.button {
+  background-color: grey;
+  border: none;
+  color: white;
+  padding: 5% 1px;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  font-size: 12px;
+  margin: 0px 0px;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+.button:hover {
+  opacity: 0.9;
+}
+
+.disabled {
+  background-color: grey;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+/* Define a CSS class called 'column' that is used to create two unequal columns which float next to each other */
+.column {
+float: left; /* Set the floating property of the column to left */
+padding: 5px; /* Add 5 pixels of padding around the content within the column */
+height: 100%; /* Set the height of the column to 100% */
+max-width: 100%
+}
+
+/* Define a CSS class called 'left' that is used to style the left column to be 60% wide */
+.left {
+width: 60%; /* Set the width of the left column to 60% */
+max-width: 100%
+}
+
+/* Define a CSS class called 'right' that is used to style the right column to be 35% wide and hidden by default */
+.right {
+width: 35%; /* Set the width of the right column to 35% */
+display: none; /* Hide the right column by default */
+}
+
+/* Define a CSS pseudo-class called 'after' that is used to clear the floats after the columns */
+.row:after {
+content: ''; /* Add an empty content to the pseudo-class */
+display: table; /* Change the display property to table */
+clear: both; /* Clear the floats after the columns */
+}
+
+/* Define a media query that sets the width of the column to 100% when the screen size is less than or equal to 600 pixels */
+@media screen and (max-width: 600px) {
+.column {
+width: 100%; /* Set the width of the column to 100% */
+}
+}
+
+/* Define a CSS class called 'data' that is used to style the data to be displayed and hide it by default */
+.data {
+display: none; /* Hide the data by default */
+}
+
+/* Define a CSS class called 'active' that is used to show the data by changing the display property to block */
+.data.active {
+display: block; /* Change the display property of the data to block to show it */
+}
+
+/* Individual button colors based on button type */
+    button[type="plasmid"] {
+      background-color: #cacaaa;
+    }
+   
+	button[type="primer"] {
+	background-color: #9b9ece;
+    }
+    
+	button[type="competent cell"] {
+      background-color: #ed6a5a;
+    }
+    
+	button[type="glycerol stock"] {
+      background-color: #5c7457;
+    }
+    
+	button[type="misc"] {
+      background-color: #141b41;
+    }
+    
+	button[type="empty"] {
+      background-color: #A9A9A9;
+      pointer-events: none;
+      cursor: not-allowed;
+    }
+</style>
+</head>
+<body>
+<h2>CEMI project</h2>
+<div class="legend">
+  <div class="legend-item plasmid">plasmid</div>
+  <div class="legend-item primer">primer</div>
+  <div class="legend-item cells">competent Cells</div>
+  <div class="legend-item glycerol">glycerol stock</div>
+  <div class="legend-item misc">misc</div>
+  <div class="legend-item empty">empty</div>
+</div>
+<div class="row">
+  <div class="column left" style="background-color:white;">
+  <div class="grid-container">
+<button class="button" data-target="data1" type="plasmid"><p>1</p><p>helixCam Z17 part<br>KAN</p></button>
+<button class="button" data-target="data2" type="plasmid"><p>2</p><p>helixCam Z18 part<br>KAN</p></button>
+<button class="button" data-target="data3" type="plasmid"><p>3</p><p>EMeRALD<br>KAN</p></button>
+<button class="button" data-target="data4" type="primer"><p>4</p><p>Forward Primer<br>nan</p></button>
+<button class="button" data-target="data5" type="primer"><p>5</p><p>Reverse Primer<br>nan</p></button>
+<button class="button" data-target="data6" type="misc"><p>6</p><p>KANAMYCIN<br>nan</p></button>
+<button class="button" data-target="data7" type="glycerol stock"><p>7</p><p>CEMI final cell A<br>KAN AMP</p></button>
+<button class="button" data-target="data8" type="competent cell"><p>8</p><p>competent mRFP cell<br>KAN</p></button>
+<button class="button" data-target="data9" type="misc"><p>9</p><p>vectors<br>CARB</p></button>
+<button class="button disabled" data-target="data10" type="empty">10</button>
+<button class="button disabled" data-target="data11" type="empty">11</button>
+<button class="button disabled" data-target="data12" type="empty">12</button>
+<button class="button disabled" data-target="data13" type="empty">13</button>
+<button class="button disabled" data-target="data14" type="empty">14</button>
+<button class="button disabled" data-target="data15" type="empty">15</button>
+<button class="button disabled" data-target="data16" type="empty">16</button>
+<button class="button disabled" data-target="data17" type="empty">17</button>
+<button class="button disabled" data-target="data18" type="empty">18</button>
+<button class="button disabled" data-target="data19" type="empty">19</button>
+<button class="button disabled" data-target="data20" type="empty">20</button>
+<button class="button disabled" data-target="data21" type="empty">21</button>
+<button class="button disabled" data-target="data22" type="empty">22</button>
+<button class="button disabled" data-target="data23" type="empty">23</button>
+<button class="button disabled" data-target="data24" type="empty">24</button>
+<button class="button disabled" data-target="data25" type="empty">25</button>
+<button class="button disabled" data-target="data26" type="empty">26</button>
+<button class="button disabled" data-target="data27" type="empty">27</button>
+<button class="button disabled" data-target="data28" type="empty">28</button>
+<button class="button disabled" data-target="data29" type="empty">29</button>
+<button class="button disabled" data-target="data30" type="empty">30</button>
+<button class="button disabled" data-target="data31" type="empty">31</button>
+<button class="button disabled" data-target="data32" type="empty">32</button>
+<button class="button disabled" data-target="data33" type="empty">33</button>
+<button class="button disabled" data-target="data34" type="empty">34</button>
+<button class="button disabled" data-target="data35" type="empty">35</button>
+<button class="button disabled" data-target="data36" type="empty">36</button>
+<button class="button disabled" data-target="data37" type="empty">37</button>
+<button class="button disabled" data-target="data38" type="empty">38</button>
+<button class="button disabled" data-target="data39" type="empty">39</button>
+<button class="button disabled" data-target="data40" type="empty">40</button>
+<button class="button disabled" data-target="data41" type="empty">41</button>
+<button class="button disabled" data-target="data42" type="empty">42</button>
+<button class="button disabled" data-target="data43" type="empty">43</button>
+<button class="button disabled" data-target="data44" type="empty">44</button>
+<button class="button disabled" data-target="data45" type="empty">45</button>
+<button class="button disabled" data-target="data46" type="empty">46</button>
+<button class="button disabled" data-target="data47" type="empty">47</button>
+<button class="button disabled" data-target="data48" type="empty">48</button>
+<button class="button disabled" data-target="data49" type="empty">49</button>
+<button class="button disabled" data-target="data50" type="empty">50</button>
+<button class="button disabled" data-target="data51" type="empty">51</button>
+<button class="button disabled" data-target="data52" type="empty">52</button>
+<button class="button disabled" data-target="data53" type="empty">53</button>
+<button class="button disabled" data-target="data54" type="empty">54</button>
+<button class="button disabled" data-target="data55" type="empty">55</button>
+<button class="button disabled" data-target="data56" type="empty">56</button>
+<button class="button disabled" data-target="data57" type="empty">57</button>
+<button class="button disabled" data-target="data58" type="empty">58</button>
+<button class="button disabled" data-target="data59" type="empty">59</button>
+<button class="button disabled" data-target="data60" type="empty">60</button>
+<button class="button disabled" data-target="data61" type="empty">61</button>
+<button class="button disabled" data-target="data62" type="empty">62</button>
+<button class="button disabled" data-target="data63" type="empty">63</button>
+<button class="button disabled" data-target="data64" type="empty">64</button>
+<button class="button disabled" data-target="data65" type="empty">65</button>
+<button class="button disabled" data-target="data66" type="empty">66</button>
+<button class="button disabled" data-target="data67" type="empty">67</button>
+<button class="button disabled" data-target="data68" type="empty">68</button>
+<button class="button disabled" data-target="data69" type="empty">69</button>
+<button class="button disabled" data-target="data70" type="empty">70</button>
+<button class="button disabled" data-target="data71" type="empty">71</button>
+<button class="button disabled" data-target="data72" type="empty">72</button>
+<button class="button disabled" data-target="data73" type="empty">73</button>
+<button class="button disabled" data-target="data74" type="empty">74</button>
+<button class="button disabled" data-target="data75" type="empty">75</button>
+<button class="button disabled" data-target="data76" type="empty">76</button>
+<button class="button disabled" data-target="data77" type="empty">77</button>
+<button class="button disabled" data-target="data78" type="empty">78</button>
+<button class="button disabled" data-target="data79" type="empty">79</button>
+<button class="button disabled" data-target="data80" type="empty">80</button>
+<button class="button disabled" data-target="data81" type="empty">81</button>
+</div>
+</div>
+<div class="column right" style="background-color:#F2F2F2;">
+<div class="data active" id="data1">
+        <p>position:1</p>
+        <h2>plasmid helixCam Z17 part</h2>
+        <p>2022-03-29 00:00:00</p>
+        <p>KAN</p>
+        <p><a href="geneious://prime/documents?urn=urn:local:davidjohnson:15w-g1vxj2qtarget="_blank"">Geneious Link</a></p>
+        <p><a href="Plasmid.gb" download="Plasmid.gb">Download</a></p>
+        <p><a href="https://www.addgene.org/186313/"target="_blank">AddGene</a></p>
+        <p>An adhesin part from the Church lab.</p>
+    </div>
+        
+<div class="data active" id="data2">
+        <p>position:2</p>
+        <h2>plasmid helixCam Z18 part</h2>
+        <p>2022-03-29 00:00:00</p>
+        <p>KAN</p>
+        <p><a href="geneious://prime/documents?urn=urn:local:davidjohnson:15w-g1vxj2qtarget="_blank"">Geneious Link</a></p>
+        <p><a href="Plasmid.gb" download="Plasmid.gb">Download</a></p>
+        <p><a href="https://www.addgene.org/186313/"target="_blank">AddGene</a></p>
+        <p>An adhesin part from the Church lab.</p>
+    </div>
+        
+<div class="data active" id="data3">
+        <p>position:3</p>
+        <h2>plasmid EMeRALD</h2>
+        <p>2022-03-29 00:00:00</p>
+        <p>KAN</p>
+        <p><a href="geneious://prime/documents?urn=urn:local:davidjohnson:15w-g1vxj2qtarget="_blank"">Geneious Link</a></p>
+        <p><a href="Plasmid.gb" download="Plasmid.gb">Download</a></p>
+        <p><a href="https://www.addgene.org/186313/"target="_blank">AddGene</a></p>
+        <p>An adhesin part from the Church lab.</p>
+    </div>
+        
+<div class="data active" id="data4">
+        <p>position:4</p>
+        <h2>primer Forward Primer</h2>
+        <p>2022-03-29 00:00:00</p>
+        <p>ATAGCTAGA 64¬∞C</p>
+        <p><a href="geneious://prime/documents?urn=urn:local:davidjohnson:15w-g1vxj2qtarget="_blank"">Geneious Link</a></p>
+        
+        
+        <p>Some forward primer</p>
+    </div>
+        
+<div class="data active" id="data5">
+        <p>position:5</p>
+        <h2>primer Reverse Primer</h2>
+        <p>2022-03-29 00:00:00</p>
+        <p>ATAGCTAGA 64¬∞C</p>
+        <p><a href="geneious://prime/documents?urn=urn:local:davidjohnson:15w-g1vxj2qtarget="_blank"">Geneious Link</a></p>
+        
+        
+        <p>Some reverse primer</p>
+    </div>
+        
+<div class="data active" id="data6">
+        <p>position:6</p>
+        <h2>misc KANAMYCIN</h2>
+        <p></p>
+        <p></p>
+        
+        
+        
+        
+        <p></p>
+        <p></p>
+        <p>misc</p>
+        <p></p>
+    </div>
+        
+<div class="data active" id="data7">
+        <p>position:7</p>
+        <h2>glycerol stock CEMI final cell A</h2>
+        <p>2022-03-29 00:00:00</p>
+        <p>KAN AMP</p>
+        
+        <p><a href="geneious://prime/documents?urn=urn:local:davidjohnson:15w-g1vxj2qtarget="_blank"">Geneious Link</a></p>
+        <p><a href="Plasmid.gb" download="Plasmid.gb">Download</a></p>
+        <p><a href="https://benchling.com/s/etr-xZiyc8Syhf8Io7nhSdGX?m=slm-ctafU1YOigvixeWiHf5E"	arget="_blank">Benchling</a></p>
+        <p>final cell from the paper</p>
+    </div>
+        
+<div class="data active" id="data8">
+        <p>position:8</p>
+        <h2>competent cell competent mRFP cell</h2>
+        <p>2022-03-29 00:00:00</p>
+        <p>KAN</p>
+        <p>mRFP POSIP Cell</p>
+    </div>
+        
+<div class="data active" id="data9">
+        <p>position:9</p>
+        <h2>misc vectors</h2>
+        <p>2022-03-29 00:00:00</p>
+        <p>CARB</p>
+        <p><a href="https://www.addgene.org/186313/"target="_blank">AddGene</a></p>
+        <p><a href="geneious://prime/documents?urn=urn:local:davidjohnson:15w-g1vxj2qtarget="_blank"">Geneious Link</a></p>
+        <p><a href="Plasmid.gb" download="Plasmid.gb">Download</a></p>
+        <p><a href="https://benchling.com/s/etr-xZiyc8Syhf8Io7nhSdGX?m=slm-ctafU1YOigvixeWiHf5E"	arget="_blank">Benchling</a></p>
+        <p>yes</p>
+        <p></p>
+        <p>misc</p>
+        <p></p>
+    </div>
+        
+<div class="data active" id="data10">
+        <h2>Data 10</h2>
+        <p>Add data for 10..</p>
+    </div>
+    
+<div class="data active" id="data11">
+        <h2>Data 11</h2>
+        <p>Add data for 11..</p>
+    </div>
+    
+<div class="data active" id="data12">
+        <h2>Data 12</h2>
+        <p>Add data for 12..</p>
+    </div>
+    
+<div class="data active" id="data13">
+        <h2>Data 13</h2>
+        <p>Add data for 13..</p>
+    </div>
+    
+<div class="data active" id="data14">
+        <h2>Data 14</h2>
+        <p>Add data for 14..</p>
+    </div>
+    
+<div class="data active" id="data15">
+        <h2>Data 15</h2>
+        <p>Add data for 15..</p>
+    </div>
+    
+<div class="data active" id="data16">
+        <h2>Data 16</h2>
+        <p>Add data for 16..</p>
+    </div>
+    
+<div class="data active" id="data17">
+        <h2>Data 17</h2>
+        <p>Add data for 17..</p>
+    </div>
+    
+<div class="data active" id="data18">
+        <h2>Data 18</h2>
+        <p>Add data for 18..</p>
+    </div>
+    
+<div class="data active" id="data19">
+        <h2>Data 19</h2>
+        <p>Add data for 19..</p>
+    </div>
+    
+<div class="data active" id="data20">
+        <h2>Data 20</h2>
+        <p>Add data for 20..</p>
+    </div>
+    
+<div class="data active" id="data21">
+        <h2>Data 21</h2>
+        <p>Add data for 21..</p>
+    </div>
+    
+<div class="data active" id="data22">
+        <h2>Data 22</h2>
+        <p>Add data for 22..</p>
+    </div>
+    
+<div class="data active" id="data23">
+        <h2>Data 23</h2>
+        <p>Add data for 23..</p>
+    </div>
+    
+<div class="data active" id="data24">
+        <h2>Data 24</h2>
+        <p>Add data for 24..</p>
+    </div>
+    
+<div class="data active" id="data25">
+        <h2>Data 25</h2>
+        <p>Add data for 25..</p>
+    </div>
+    
+<div class="data active" id="data26">
+        <h2>Data 26</h2>
+        <p>Add data for 26..</p>
+    </div>
+    
+<div class="data active" id="data27">
+        <h2>Data 27</h2>
+        <p>Add data for 27..</p>
+    </div>
+    
+<div class="data active" id="data28">
+        <h2>Data 28</h2>
+        <p>Add data for 28..</p>
+    </div>
+    
+<div class="data active" id="data29">
+        <h2>Data 29</h2>
+        <p>Add data for 29..</p>
+    </div>
+    
+<div class="data active" id="data30">
+        <h2>Data 30</h2>
+        <p>Add data for 30..</p>
+    </div>
+    
+<div class="data active" id="data31">
+        <h2>Data 31</h2>
+        <p>Add data for 31..</p>
+    </div>
+    
+<div class="data active" id="data32">
+        <h2>Data 32</h2>
+        <p>Add data for 32..</p>
+    </div>
+    
+<div class="data active" id="data33">
+        <h2>Data 33</h2>
+        <p>Add data for 33..</p>
+    </div>
+    
+<div class="data active" id="data34">
+        <h2>Data 34</h2>
+        <p>Add data for 34..</p>
+    </div>
+    
+<div class="data active" id="data35">
+        <h2>Data 35</h2>
+        <p>Add data for 35..</p>
+    </div>
+    
+<div class="data active" id="data36">
+        <h2>Data 36</h2>
+        <p>Add data for 36..</p>
+    </div>
+    
+<div class="data active" id="data37">
+        <h2>Data 37</h2>
+        <p>Add data for 37..</p>
+    </div>
+    
+<div class="data active" id="data38">
+        <h2>Data 38</h2>
+        <p>Add data for 38..</p>
+    </div>
+    
+<div class="data active" id="data39">
+        <h2>Data 39</h2>
+        <p>Add data for 39..</p>
+    </div>
+    
+<div class="data active" id="data40">
+        <h2>Data 40</h2>
+        <p>Add data for 40..</p>
+    </div>
+    
+<div class="data active" id="data41">
+        <h2>Data 41</h2>
+        <p>Add data for 41..</p>
+    </div>
+    
+<div class="data active" id="data42">
+        <h2>Data 42</h2>
+        <p>Add data for 42..</p>
+    </div>
+    
+<div class="data active" id="data43">
+        <h2>Data 43</h2>
+        <p>Add data for 43..</p>
+    </div>
+    
+<div class="data active" id="data44">
+        <h2>Data 44</h2>
+        <p>Add data for 44..</p>
+    </div>
+    
+<div class="data active" id="data45">
+        <h2>Data 45</h2>
+        <p>Add data for 45..</p>
+    </div>
+    
+<div class="data active" id="data46">
+        <h2>Data 46</h2>
+        <p>Add data for 46..</p>
+    </div>
+    
+<div class="data active" id="data47">
+        <h2>Data 47</h2>
+        <p>Add data for 47..</p>
+    </div>
+    
+<div class="data active" id="data48">
+        <h2>Data 48</h2>
+        <p>Add data for 48..</p>
+    </div>
+    
+<div class="data active" id="data49">
+        <h2>Data 49</h2>
+        <p>Add data for 49..</p>
+    </div>
+    
+<div class="data active" id="data50">
+        <h2>Data 50</h2>
+        <p>Add data for 50..</p>
+    </div>
+    
+<div class="data active" id="data51">
+        <h2>Data 51</h2>
+        <p>Add data for 51..</p>
+    </div>
+    
+<div class="data active" id="data52">
+        <h2>Data 52</h2>
+        <p>Add data for 52..</p>
+    </div>
+    
+<div class="data active" id="data53">
+        <h2>Data 53</h2>
+        <p>Add data for 53..</p>
+    </div>
+    
+<div class="data active" id="data54">
+        <h2>Data 54</h2>
+        <p>Add data for 54..</p>
+    </div>
+    
+<div class="data active" id="data55">
+        <h2>Data 55</h2>
+        <p>Add data for 55..</p>
+    </div>
+    
+<div class="data active" id="data56">
+        <h2>Data 56</h2>
+        <p>Add data for 56..</p>
+    </div>
+    
+<div class="data active" id="data57">
+        <h2>Data 57</h2>
+        <p>Add data for 57..</p>
+    </div>
+    
+<div class="data active" id="data58">
+        <h2>Data 58</h2>
+        <p>Add data for 58..</p>
+    </div>
+    
+<div class="data active" id="data59">
+        <h2>Data 59</h2>
+        <p>Add data for 59..</p>
+    </div>
+    
+<div class="data active" id="data60">
+        <h2>Data 60</h2>
+        <p>Add data for 60..</p>
+    </div>
+    
+<div class="data active" id="data61">
+        <h2>Data 61</h2>
+        <p>Add data for 61..</p>
+    </div>
+    
+<div class="data active" id="data62">
+        <h2>Data 62</h2>
+        <p>Add data for 62..</p>
+    </div>
+    
+<div class="data active" id="data63">
+        <h2>Data 63</h2>
+        <p>Add data for 63..</p>
+    </div>
+    
+<div class="data active" id="data64">
+        <h2>Data 64</h2>
+        <p>Add data for 64..</p>
+    </div>
+    
+<div class="data active" id="data65">
+        <h2>Data 65</h2>
+        <p>Add data for 65..</p>
+    </div>
+    
+<div class="data active" id="data66">
+        <h2>Data 66</h2>
+        <p>Add data for 66..</p>
+    </div>
+    
+<div class="data active" id="data67">
+        <h2>Data 67</h2>
+        <p>Add data for 67..</p>
+    </div>
+    
+<div class="data active" id="data68">
+        <h2>Data 68</h2>
+        <p>Add data for 68..</p>
+    </div>
+    
+<div class="data active" id="data69">
+        <h2>Data 69</h2>
+        <p>Add data for 69..</p>
+    </div>
+    
+<div class="data active" id="data70">
+        <h2>Data 70</h2>
+        <p>Add data for 70..</p>
+    </div>
+    
+<div class="data active" id="data71">
+        <h2>Data 71</h2>
+        <p>Add data for 71..</p>
+    </div>
+    
+<div class="data active" id="data72">
+        <h2>Data 72</h2>
+        <p>Add data for 72..</p>
+    </div>
+    
+<div class="data active" id="data73">
+        <h2>Data 73</h2>
+        <p>Add data for 73..</p>
+    </div>
+    
+<div class="data active" id="data74">
+        <h2>Data 74</h2>
+        <p>Add data for 74..</p>
+    </div>
+    
+<div class="data active" id="data75">
+        <h2>Data 75</h2>
+        <p>Add data for 75..</p>
+    </div>
+    
+<div class="data active" id="data76">
+        <h2>Data 76</h2>
+        <p>Add data for 76..</p>
+    </div>
+    
+<div class="data active" id="data77">
+        <h2>Data 77</h2>
+        <p>Add data for 77..</p>
+    </div>
+    
+<div class="data active" id="data78">
+        <h2>Data 78</h2>
+        <p>Add data for 78..</p>
+    </div>
+    
+<div class="data active" id="data79">
+        <h2>Data 79</h2>
+        <p>Add data for 79..</p>
+    </div>
+    
+<div class="data active" id="data80">
+        <h2>Data 80</h2>
+        <p>Add data for 80..</p>
+    </div>
+    
+<div class="data active" id="data81">
+        <h2>Data 81</h2>
+        <p>Add data for 81..</p>
+    </div>
+    
+</div>
+</div>
+<script>
+  // Get all buttons
+  var buttons = document.querySelectorAll('.button');
+
+  // Get all data elements
+  var dataElements = document.querySelectorAll('.data');
+
+  // Loop through buttons and add event listener
+  buttons.forEach(function(button) {
+    button.addEventListener('click', function() {
+      // Remove active class from all buttons
+      buttons.forEach(function(btn) {
+        btn.classList.remove('active');
+      });
+
+      // Add active class to clicked button
+      button.classList.add('active');
+
+      // Remove active class from all data elements
+      dataElements.forEach(function(dataElement) {
+        dataElement.classList.remove('active');
+      });
+
+      // Get data target from clicked button and add active class to corresponding data element
+      var dataTarget = button.getAttribute('data-target');
+      var activeData = document.getElementById(dataTarget);
+      activeData.classList.add('active');
+
+      // Show the right column after the first click
+      document.querySelector('.column.right').style.display = 'block';
+    });
+  });
+</script>
+
+</body>
+</html>
+

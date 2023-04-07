@@ -1,25 +1,36 @@
-name: Excel to HTML
+name: Generate HTML from Excel and Upload
 
-on: 
+on:
   workflow_dispatch:
 
 jobs:
-  run-python:
+  build:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-        
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      # Checkout the repository into the workflow
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # Install Python
+      - name: Set up Python
+        uses: actions/setup-python@v2
         with:
-          python-version: '3.11'
-          
-      - name: Run Python Script
+          python-version: 3.8
+
+      # Install dependencies
+      - name: Install dependencies
         run: |
-          python -m pip install pandas openpyxl
-          python excel-html.py
-          
-    
-    
+          python -m pip install --upgrade pip
+          pip install openpyxl
+
+      # Run the Python script to generate HTML
+      - name: Generate HTML
+        run: python excel-html.py
+
+      # Upload the generated index.html file as an artifact
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: index.html
+          path: ./index.html

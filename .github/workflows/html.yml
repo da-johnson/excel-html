@@ -1,34 +1,25 @@
-name: Create and Upload File
+name: Excel to HTML
 
-on:
-  push:
-    branches:
-      - main
+on: 
+  workflow_dispatch:
 
 jobs:
-  create-and-upload-file:
+  run-python:
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Create File
-        run: echo "This is a sample file" > sample.txt
-
-      - name: Commit Changes
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          
+      - name: Run Python Script
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add sample.txt
-          git commit -m "Add sample file"
-
-      - name: Push Changes
-        uses: ad-m/github-push-action@master
-        with:
-          branch: main
-
-      - name: Upload File to Main Branch
-        uses: actions/upload-artifact@v2
-        with:
-          name: sample-file
-          path: ./sample.txt
+          python -m pip install pandas openpyxl
+          python excel-html.py
+          
+    
+    

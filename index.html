@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 /* This code defines styles for a legend, which is typically used to explain what the colors in a visualization mean */
 
@@ -21,23 +22,23 @@ color: white
 
 /* Each legend item has a different background color to represent different data categories */
 .legend-item.plasmid {
-background-color: #00CED1; /* Set the background color for the plasmid category */
+background-color: #cacaaa; / /*Set the background color for the plasmid category */
 }
 
 .legend-item.primer {
-background-color: #FFA500; /* Set the background color for the primer category */
+background-color: #9b9ece; /* Set the background color for the primer category */
 }
 
 .legend-item.cells {
-background-color: #00FF00; /* Set the background color for the cells category */
+background-color: #ed6a5a; /* Set the background color for the cells category */
 }
 
 .legend-item.glycerol {
-background-color: #9932CC; /* Set the background color for the stabs category */
+background-color: #5c7457; /* Set the background color for the stabs category */
 }
 
 .legend-item.misc {
-background-color: #FFC0CB; /* Set the background color for the misc category */
+background-color: #141b41; /* Set the background color for the misc category */
 }
 
 .legend-item.empty {
@@ -45,38 +46,36 @@ background-color: #A9A9A9; /* Set the background color for empty category */
 }
 
 .grid-container {
+  background-color: black;
   display: grid;
   grid-template-columns: repeat(9, 1fr);
-  gap: 2px;
-  background-color: black;
-  padding: 2px;
-  height: 100%;
-  width: max-content;
-  max-width: 100%; /* set max-width to ensure it doesn't overflow column left */
+  grid-gap: 1.5px;
+  justify-cotent: center;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .grid-container > div {
   background-color: rgba(255, 255, 255, 0.8);
   text-align: center;
-  padding: 2px 0;
-  font-size: 10px;
+  padding: 1px 0;
+  font-size 10px;
 }
-
 
 .button {
   background-color: grey;
   border: none;
   color: white;
-  padding: 5% 1px;
+  padding: 0%;
   text-align: center;
-  text-decoration: none;
+  text-decoation: none;
   display: block;
   font-size: 12px;
   margin: 0px 0px;
   cursor: pointer;
-  width: 100%;
-  height: 100%;
+  max-width: 100%;
 }
+
 
 .button:hover {
   opacity: 0.9;
@@ -88,38 +87,30 @@ background-color: #A9A9A9; /* Set the background color for empty category */
   cursor: not-allowed;
 }
 
-/* Define a CSS class called 'column' that is used to create two unequal columns which float next to each other */
+
+* {
+  box-sizing: border-box;
+}
+
+/* Create two equal columns that floats next to each other */
 .column {
-float: left; /* Set the floating property of the column to left */
-padding: 5px; /* Add 5 pixels of padding around the content within the column */
-height: 100%; /* Set the height of the column to 100% */
-max-width: 100%
+  float: left;
+  width: 50%;
+  padding: 10px;
 }
 
-/* Define a CSS class called 'left' that is used to style the left column to be 60% wide */
-.left {
-width: 60%; /* Set the width of the left column to 60% */
-max-width: 100%
-}
-
-/* Define a CSS class called 'right' that is used to style the right column to be 35% wide and hidden by default */
-.right {
-width: 35%; /* Set the width of the right column to 35% */
-display: none; /* Hide the right column by default */
-}
-
-/* Define a CSS pseudo-class called 'after' that is used to clear the floats after the columns */
+/* Clear floats after the columns */
 .row:after {
-content: ''; /* Add an empty content to the pseudo-class */
-display: table; /* Change the display property to table */
-clear: both; /* Clear the floats after the columns */
+  content: "";
+  display: table;
+  clear: both;
 }
 
-/* Define a media query that sets the width of the column to 100% when the screen size is less than or equal to 600 pixels */
-@media screen and (max-width: 600px) {
-.column {
-width: 100%; /* Set the width of the column to 100% */
-}
+/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 988px) {
+  .column {
+    width: 100%;
+  }
 }
 
 /* Define a CSS class called 'data' that is used to style the data to be displayed and hide it by default */
@@ -171,7 +162,7 @@ display: block; /* Change the display property of the data to block to show it *
   <div class="legend-item empty">empty</div>
 </div>
 <div class="row">
-  <div class="column left" style="background-color:white;">
+  <div class="column" style="background-color:white;">
   <div class="grid-container">
 <button class="button" data-target="data1" type="plasmid"><p>1</p><p>helixCam Z17 part<br>KAN</p></button>
 <button class="button" data-target="data2" type="plasmid"><p>2</p><p>helixCam Z18 part<br>KAN</p></button>
@@ -256,7 +247,7 @@ display: block; /* Change the display property of the data to block to show it *
 <button class="button disabled" data-target="data81" type="empty">81</button>
 </div>
 </div>
-<div class="column right" style="background-color:#F2F2F2;">
+<div class="column right" style="display:none">
 <div class="data active" id="data1">
         <p>position:1</p>
         <h2>plasmid helixCam Z17 part</h2>
@@ -741,6 +732,9 @@ display: block; /* Change the display property of the data to block to show it *
   // Get all data elements
   var dataElements = document.querySelectorAll('.data');
 
+  // Variable to keep track of whether the button has been clicked before or not
+  var hasClicked = false;
+
   // Loop through buttons and add event listener
   buttons.forEach(function(button) {
     button.addEventListener('click', function() {
@@ -762,11 +756,15 @@ display: block; /* Change the display property of the data to block to show it *
       var activeData = document.getElementById(dataTarget);
       activeData.classList.add('active');
 
-      // Show the right column after the first click
-      document.querySelector('.column.right').style.display = 'block';
+      // Show the right column only on the first click
+      if (!hasClicked) {
+        document.querySelector('.column.right').style.display = 'block';
+        hasClicked = true;
+      }
     });
   });
 </script>
+
 
 </body>
 </html>

@@ -18,7 +18,7 @@ jobs:
           
       - name: Run Python Script
         run: |
-          python -m pip install requests
+          python -m pip install pandas
           python excel-html.py
           
     

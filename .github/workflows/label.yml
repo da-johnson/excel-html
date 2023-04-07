@@ -16,4 +16,4 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt # Replace with your requirements file name
     - name: Run script
-      run: python your_script.py # Replace with your script name
+      run: python excel-html.py # Replace with your script name

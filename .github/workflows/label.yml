@@ -1,11 +1,12 @@
 name: Excel to HTML
 
 on: 
-  [push]
+  workflow_dispatch:
 
 jobs:
-  run-python
+  run-python:
     runs-on: ubuntu-latest
+    
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3

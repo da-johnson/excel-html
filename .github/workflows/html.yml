@@ -27,7 +27,7 @@ jobs:
 
       - name: commit
         run: |
-          # Stage the file, commit and push
+         # Stage the file, commit and push
          git branch -M main
          git add .
          git commit -m "new date commit"

@@ -21,5 +21,16 @@ jobs:
           python -m pip install pandas openpyxl
           python excel-html.py
           
+      - name: Commit changes
+      run: |
+        git config --global user.email "no-reply@github.com"
+        git config --global user.name "GitHub Actions"
+        git add index.html
+        git commit -m "AUTO updated index.html"
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
     
     

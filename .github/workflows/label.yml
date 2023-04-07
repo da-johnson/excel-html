@@ -7,13 +7,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python
-      uses: actions/setup-python@v2
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
       with:
-        python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+        node-version: '16.x' # Version range or exact version of a Node.js version to use, using SemVer's version range syntax
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt # Replace with your requirements file name
+        npm install # Replace with your package manager command
     - name: Run script
-      run: python excel-html.py # Replace with your script name
+      run: node excel-html.py # Replace with your script name
